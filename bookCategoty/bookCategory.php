@@ -14,7 +14,7 @@
         }
 
         .nav-link:hover{
-            background-color: #6272af;
+            background-color: #052dcc;
             color: white !important;
         }
 
@@ -24,22 +24,30 @@
     </style>
 </head>
 <body>
-    <div class="container-fluid"">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100" style="max-width: 20%; " >
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- SIDEBAR -->
+        <div class="col-md-2 p-0">
+
+            <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100">
 
                 <a class="navbar-brand mb-4 d-flex align-items-center gap-2 text-white" href="#">
-                    <i class="bi bi-building-fill text-primary fs-3" style="padding: 10px;"></i>
+                    
+                    <i class="bi bi-building-fill text-primary fs-3"></i>
+
                     <div>
                         <div class="fw-bold fs-4">Lexicon Admin</div>
                         <small class="text-secondary">Institutional Portal</small>
                     </div>
+
                 </a>
 
                 <ul class="nav nav-pills flex-column mb-auto">
 
-                    <li class="nav-item">
+                     <li class="nav-item">
                         <a href="staff.php" class="nav-link text-white">
                             <i class="bi bi-person-badge" style="padding: 10px;"></i>
                             Staff Management
@@ -85,11 +93,49 @@
 
             </div>
 
-            <!-- Main Content -->
-            <div class="col-md-10">
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="col-md-10 p-0">
+
+            <!-- TOP NAVBAR -->
+            <nav class="navbar navbar-expand-lg bg-primary navbar-dark px-3">
+
+                <form class="d-flex">
+                    <input class="form-control me-3"
+                        type="search"
+                        placeholder="Search">
+
+                    <button class="btn btn-light">
+                        Search
+                    </button>
+                </form>
+
+                <div class="container-fluid justify-content-end d-flex">
+                    <i class="bi bi-person-circle text-white fs-3" style="padding-right: 10px;"></i>
+                    <a class="navbar-brand" href="#">
+                        User
+                    </a>
+
+                </div>
+
+            </nav>
+
+            <!-- PAGE CONTENT -->
+            <div class="p-4">
+
+                <h2>Book Categories</h2>
+
             </div>
 
         </div>
+
     </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
 </body>
 </html>
