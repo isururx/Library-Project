@@ -1,8 +1,3 @@
-<?php
-include '../db/db.php';
-$result = $conn->query("SELECT * FROM bookcategory");
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,9 +172,13 @@ $result = $conn->query("SELECT * FROM bookcategory");
 
                 <!-- CATEGORY TABLE -->
                 <div class="card shadow-sm border-0 mt-5">
+
                     <div class="card-body">
+
                         <div class="d-flex justify-content-between align-items-center mb-3">
+
                             <h4 class="mb-0">Book Categories</h4>
+
                         </div>
 
                         <table class="table table-hover align-middle">
@@ -194,23 +193,19 @@ $result = $conn->query("SELECT * FROM bookcategory");
                             </thead>
 
                             <tbody>
-                                <?php while($row = $result->fetch_assoc()){ ?>
-                                    <tr>
-                                        <td><?php echo $row['category_id']; ?></td>
-                                        <td><?php echo $row['category_Name']; ?></td>
-                                        <td><?php echo $row['date_modified']; ?></td>
-                                        <td>
-                                            <a href="updateCategory.php?id=<?php echo $row['category_id']; ?>"
-                                            class="btn btn-warning btn-sm">
+                                <tr>
+                                    <td>1</td>
+                                    <td>Science Fiction</td>
+                                    <td>2026-11-12</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning">
                                             <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <a href="deleteCategory.php?id=<?php echo $row['category_id']; ?>"
-                                            class="btn btn-danger btn-sm">
+                                        </button>
+                                        <button class="btn btn-sm btn-danger">
                                             <i class="bi bi-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <?php } ?>
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
