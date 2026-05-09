@@ -36,9 +36,7 @@ $result = $conn->query("SELECT * FROM bookcategory");
 
         <!-- SIDEBAR -->
         <div class="col-md-2 p-0">
-
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100">
-
                 <a class="navbar-brand mb-4 d-flex align-items-center gap-2 text-white" href="#">
                     
                     <i class="bi bi-building-fill text-primary fs-3"></i>
