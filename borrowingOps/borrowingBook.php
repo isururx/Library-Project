@@ -1,7 +1,6 @@
 <?php
 include '../db/db.php';
 
-
 $query = "SELECT bb.*, b.book_name FROM bookborrower bb 
           LEFT JOIN book b ON bb.book_id = b.book_id";
 $result = $conn->query($query);
