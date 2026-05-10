@@ -1,8 +1,20 @@
 <?php
 include '../db/db.php';
 
+
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+
+
 $query = "SELECT bb.*, b.book_name FROM bookborrower bb 
           LEFT JOIN book b ON bb.book_id = b.book_id";
+
+if (!empty($search)) {
+    $query .= " WHERE bb.borrow_id LIKE '%$search%' 
+                OR bb.book_id LIKE '%$search%' 
+                OR bb.member_id LIKE '%$search%' 
+                OR b.book_name LIKE '%$search%'";
+}
+
 $result = $conn->query($query);
 ?>
 
@@ -95,15 +107,21 @@ $result = $conn->query($query);
             <!-- TOP NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
 
-                <form class="d-flex mx-auto">
-                    <input class="form-control me-3"
-                        type="search"
-                        placeholder="Search"
-                        style="width: 300px;">
+                <form class="d-flex mx-auto" action="borrowing_book.php" method="GET">
+                   <input class="form-control me-3"
+                         type="search"
+                          name="search" 
+                          placeholder="Search by ID or Name..."
+                          value="<?php echo htmlspecialchars($search); ?>"
+                          style="width: 300px;">
 
-                    <button type="button" class="btn btn-secondary">
-                        Search
-                    </button>
+                   <button type="submit" class="btn btn-secondary">
+                      Search
+                 </button>
+    
+                  <?php if(!empty($search)): ?>
+                          <a href="borrowing_book.php" class="btn btn-outline-light ms-2">Clear</a>
+                  <?php endif; ?>
                 </form>
 
                 <div class="container-fluid justify-content-end d-flex">
