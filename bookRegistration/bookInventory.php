@@ -1,5 +1,7 @@
 <?php
 include '../db/db.php';
+include '../authCheck.php';
+
 $result = $conn->query("SELECT * FROM book");
 
 $query = "SELECT COUNT(*) AS total FROM book";
@@ -43,11 +45,8 @@ $totalBooks = $row['total'];
 
         <!-- SIDEBAR -->
         <div class="col-md-2 p-0">
-
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100">
-
                 <a class="navbar-brand mb-4 d-flex align-items-center gap-2 text-white" href="#">
-                    
                     <i class="bi bi-building-fill text-primary fs-3"></i>
 
                     <div>
@@ -104,34 +103,39 @@ $totalBooks = $row['total'];
         <div class="col-md-10 p-0">
 
             <!-- TOP NAVBAR -->
-            <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
-
+            <<nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
                 <form class="d-flex mx-auto">
                     <input class="form-control me-3"
                         type="search"
                         placeholder="Search"
                         style="width: 300px;">
-
                     <button type="button" class="btn btn-secondary">
                         Search
                     </button>
                 </form>
 
-                <div class="container-fluid justify-content-end d-flex">
-                    <i class="bi bi-person-circle text-white fs-3" style="padding-right: 10px;"></i>
-                    <a class="navbar-brand" href="#">
-                        User
+                <div class="dropdown">
+                    <a class="btn btn-outline-light dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown">
+                        <?php echo $_SESSION['username']; ?>
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item text-danger" href="../logout.php">
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
 
                 </div>
-
             </nav>
 
             <!-- PAGE CONTENT -->
             <div class="p-4">
-
                 <h1>Manage Book Inventory</h1>
-                
+
                 <!-- SUMMARY CARDS -->
                 <div class="row mt-4">
 
@@ -158,7 +162,7 @@ $totalBooks = $row['total'];
                                         Add New Book
                                     </h6>
 
-                                    <a href="Book_reg.php" class="btn               btn-outline-primary">
+                                    <a href="Book_reg.php" class="btn btn-outline-primary">
                                         New Book
                                     <i class="bi bi-arrow-right"></i> 
                                     </a>
