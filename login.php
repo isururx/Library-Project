@@ -1,6 +1,8 @@
 <?php
+
 session_start();
-include '../db/db.php';
+
+include 'db/db.php';
 
 $message = "";
 
@@ -10,7 +12,9 @@ if(isset($_POST['login'])){
     $password = trim($_POST['password']);
 
     $stmt = $conn->prepare("SELECT * FROM user WHERE username=? AND password=?");
+
     $stmt->bind_param("ss", $username, $password);
+
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -22,26 +26,32 @@ if(isset($_POST['login'])){
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['username'] = $user['username'];
 
-        header("Location: ..\bookRegistration\Book_inventory.php");
+        header("Location: bookRegistration/bookInventory.php");
         exit();
 
-    } else {
-        $message = "Invalid username or password!";
+    }else{
+
+        $message = "Invalid Username or Password!";
+
     }
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login - LibraCore</title>
 
-    <!-- Bootstrap -->
+    <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
+    <!-- BOOTSTRAP ICONS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
@@ -52,10 +62,12 @@ if(isset($_POST['login'])){
             overflow: hidden;
         }
 
+        /* LOGIN CARD */
+
         .login-card{
             border: none;
             border-radius: 20px;
-            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease;
         }
 
         .form-control{
@@ -76,6 +88,8 @@ if(isset($_POST['login'])){
             transform: translateY(-2px);
         }
 
+        /* PASSWORD ICON */
+
         .password-wrapper{
             position: relative;
         }
@@ -88,6 +102,21 @@ if(isset($_POST['login'])){
             cursor: pointer;
             color: gray;
             font-size: 18px;
+        }
+
+        /* FADE ANIMATION */
+
+        @keyframes fadeIn{
+
+            from{
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to{
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* LOADER */
@@ -163,6 +192,8 @@ if(isset($_POST['login'])){
             letter-spacing: 1px;
         }
 
+        /* BOOK FLIP */
+
         @keyframes flip{
 
             0%{
@@ -185,24 +216,43 @@ if(isset($_POST['login'])){
 <body>
 
 <div class="container h-100 d-flex justify-content-center align-items-center">
+
     <div class="card shadow-lg login-card p-4" style="width: 420px;">
+
+        <!-- HEADER -->
+
         <div class="text-center mb-4">
+
             <i class="bi bi-book-half text-primary" style="font-size: 60px;"></i>
-            <h2 class="fw-bold mt-2">LibraCore</h2>
+
+            <h2 class="fw-bold mt-2">
+                LibraCore
+            </h2>
+
             <p class="text-muted">
                 Library Management System
             </p>
+
         </div>
 
+        <!-- ERROR MESSAGE -->
+
         <?php if($message != ""){ ?>
+
             <div class="alert alert-danger">
                 <?php echo $message; ?>
             </div>
+
         <?php } ?>
 
+        <!-- LOGIN FORM -->
+
         <form method="POST">
+
             <!-- USERNAME -->
+
             <div class="mb-3">
+
                 <label class="form-label">
                     Username
                 </label>
@@ -216,20 +266,25 @@ if(isset($_POST['login'])){
             </div>
 
             <!-- PASSWORD -->
+
             <div class="mb-4">
+
                 <label class="form-label">
                     Password
                 </label>
 
                 <div class="password-wrapper">
+
                     <input type="password"
                            name="password"
                            id="password"
                            class="form-control"
                            placeholder="Enter password"
                            required>
+
                     <i class="bi bi-eye-slash toggle-password"
                        id="togglePassword"></i>
+
                 </div>
 
             </div>
@@ -239,9 +294,15 @@ if(isset($_POST['login'])){
             <button type="submit"
                     name="login"
                     class="btn btn-primary w-100 btn-login">
+
                 <i class="bi bi-box-arrow-in-right"></i>
                 Login
+
             </button>
+
+            <div class="text-center mt-3 text-muted">
+                Secure Staff Access Portal
+            </div>
 
         </form>
 
@@ -250,39 +311,63 @@ if(isset($_POST['login'])){
 </div>
 
 <!-- BOOK LOADER -->
+
 <div id="loader-wrapper">
+
     <div class="book">
+
         <div class="book-page page-left"></div>
+
         <div class="book-page page-middle"></div>
+
         <div class="book-page page-right"></div>
+
     </div>
+
     <div class="loading-text">
         Opening Library...
     </div>
+
 </div>
 
 <!-- SCRIPTS -->
 
 <script>
+
     // LOGIN LOADER
+
     const loginForm = document.querySelector("form");
     const loader = document.getElementById("loader-wrapper");
 
     loginForm.addEventListener("submit", function(){
-        loader.classList.add("active");
+
+        const username = document.querySelector("input[name='username']").value;
+        const password = document.querySelector("input[name='password']").value;
+
+        if(username !== "" && password !== ""){
+
+            loader.classList.add("active");
+
+        }
+
     });
 
     // SHOW / HIDE PASSWORD
+
     const togglePassword = document.getElementById("togglePassword");
-    const password = document.getElementById("password");
+    const passwordField = document.getElementById("password");
 
     togglePassword.addEventListener("click", function(){
-        const type = password.getAttribute("type") === "password"
+
+        const type = passwordField.getAttribute("type") === "password"
             ? "text"
             : "password";
-        password.setAttribute("type", type);
+
+        passwordField.setAttribute("type", type);
+
         this.classList.toggle("bi-eye");
         this.classList.toggle("bi-eye-slash");
+
     });
 
 </script>

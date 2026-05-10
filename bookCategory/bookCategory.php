@@ -1,6 +1,7 @@
 <?php
 include '../db/db.php';
 include '../login/authCheck.php';
+session_start();
 $result = $conn->query("SELECT * FROM bookcategory");
 ?>
 
@@ -119,13 +120,11 @@ $result = $conn->query("SELECT * FROM bookcategory");
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end">
-
                         <li>
-                            <a class="dropdown-item text-danger" href="logout.php">
+                            <a class="dropdown-item text-danger" href="../login/logout.php">
                                 Logout
                             </a>
                         </li>
-
                     </ul>
 
                 </div>
