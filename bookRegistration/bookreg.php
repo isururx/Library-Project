@@ -6,18 +6,13 @@ $message = "";
 if(isset($_POST['registerBook'])){
 
     $title = $_POST['title'];
-    $author = $_POST['author'];
-    $isbn = $_POST['isbn'];
+    $id= $_POST['ID'];
     $category = $_POST['category'];
-    $publisher = $_POST['publisher'];
-    $publish_year = $_POST['publish_year'];
-    $quantity = $_POST['quantity'];
-    $shelf = $_POST['shelf'];
 
-    $sql = "INSERT INTO books
-    (title, author, isbn, category_id, publisher, publish_year, quantity, shelf_location)
+    $sql = "INSERT INTO book
+    (book_id, book_name, category_id)
     VALUES
-    ('$title', '$author', '$isbn', '$category', '$publisher', '$publish_year', '$quantity', '$shelf')";
+    ('$id', '$title', '$category')";
 
     if($conn->query($sql)){
         $message = "Book registered successfully!";
@@ -107,13 +102,13 @@ $categoryResult = $conn->query("SELECT * FROM bookcategory");
                     </li>
 
                     <li class="nav-item">
-                        <a href="Book_reg.php" class="nav-link active">
+                        <a href="Book_inventory.php" class="nav-link active">
                             <i class="bi bi-book" style="padding: 10px;"></i>
                             Book Inventory
                         </a>
                     </li>
 
-                    <li>
+                    <li class="nav-item">
                         <a href="bookCategory.php" class="nav-link text-white">
                             <i class="bi bi-grid" style="padding: 10px;"></i>
                             Categories
@@ -182,7 +177,7 @@ $categoryResult = $conn->query("SELECT * FROM bookcategory");
                         <p class="text-muted mb-0">Register new books into the library inventory</p>
                     </div>
 
-                    <a href="books.php" class="btn btn-outline-primary">
+                    <a href="Book_inventory.php" class="btn btn-outline-primary">
                         <i class="bi bi-arrow-left"></i>
                         Back to Inventory
                     </a>
