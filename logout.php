@@ -6,7 +6,7 @@ session_unset();
 
 session_destroy();
 
-header("Location: /Library-Project/login.php");
+header("Location: login.php");
 
 exit();
 
