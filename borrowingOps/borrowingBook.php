@@ -112,7 +112,7 @@ $result = $conn->query($query);
                    <input class="form-control me-3"
                          type="search"
                           name="search" 
-                          placeholder="Search by ID or Name..."
+                          placeholder="Search by ID"
                           value="<?php echo htmlspecialchars($search); ?>"
                           style="width: 300px;">
 
