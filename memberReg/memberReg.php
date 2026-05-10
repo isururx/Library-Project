@@ -1,6 +1,7 @@
 <?php
 include '../db/db.php';
 include '../authCheck.php';
+
 $result = $conn->query("SELECT * FROM member");
 ?>
 
@@ -108,7 +109,7 @@ $result = $conn->query("SELECT * FROM member");
 <div class="container-fluid">
     <div class="row">
 
-        <!-- SIDEBAR (unchanged from bookCategory.php) -->
+        <!-- SIDEBAR -->
         <div class="col-md-2 p-0">
             <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100">
 
@@ -134,14 +135,14 @@ $result = $conn->query("SELECT * FROM member");
                     </li>
 
                     <li class="nav-item">
-                        <a href="bookCategory.php" class="nav-link text-white">
+                        <a href="../bookCategory/bookCategory.php" class="nav-link text-white">
                             <i class="bi bi-grid" style="padding: 10px;"></i>
                             Categories
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="../memberReg/memberReg.php" class="nav-link active">
+                        <a href="memberReg.php" class="nav-link active">
                             <i class="bi bi-people" style="padding: 10px;"></i>
                             Member Registry
                         </a>
@@ -170,9 +171,8 @@ $result = $conn->query("SELECT * FROM member");
         <!-- MAIN CONTENT -->
         <div class="col-md-10 p-0">
 
-            <!-- TOP NAVBAR (unchanged from bookCategory.php) -->
+            <!-- TOP NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
-
                 <form class="d-flex mx-auto">
                     <input class="form-control me-3"
                         type="search"
@@ -185,20 +185,20 @@ $result = $conn->query("SELECT * FROM member");
 
                 <div class="dropdown">
                     <a class="btn btn-outline-light dropdown-toggle"
-                        href="#"
-                        role="button"
-                        data-bs-toggle="dropdown">
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown">
                         <?php echo $_SESSION['username']; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item text-danger" href="logout.php">
+                            <a class="dropdown-item text-danger" href="../logout.php">
                                 Logout
                             </a>
                         </li>
                     </ul>
-                </div>
 
+                </div>
             </nav>
 
             <!-- PAGE CONTENT -->

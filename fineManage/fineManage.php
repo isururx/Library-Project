@@ -1,5 +1,6 @@
 <?php
 include '../db/db.php';
+include '../authCheck.php';
 
 /* SUGGEST NEXT FINE ID */
 $next_fine_id = "F001";
@@ -117,7 +118,7 @@ $fine_result = $conn->query("
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fines Management - Lexicon Admin</title>
+    <title>Fines Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -161,59 +162,52 @@ $fine_result = $conn->query("
 
         <!-- SIDEBAR -->
         <div class="col-md-2 p-0">
+            <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-dark text-white">
 
-            <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-white">
-
-                <a class="navbar-brand mb-4 d-flex align-items-center gap-2 text-white" href="#">
-                    
-                    <i class="bi bi-building-fill text-primary fs-3"></i>
-
+                <a class="navbar-brand mb-4 d-flex align-items-center text-white px-2 py-3" href="#">
+                    <i class="bi bi-book-half text-primary me-3" style="font-size: 40px;"></i>
                     <div>
-                        <div class="fw-bold fs-4">Lexicon Admin</div>
-                        <small class="text-secondary">Institutional Portal</small>
+                        <h2 class="fw-bold mb-0" style="font-size: 30px;">
+                            LibraCore
+                        </h2>
+                        <small class="text-secondary">
+                            Library Portal
+                        </small>
                     </div>
-
                 </a>
 
                 <ul class="nav nav-pills flex-column mb-auto">
 
-                     <li class="nav-item">
-                        <a href="staff.php" class="nav-link text-white">
-                            <i class="bi bi-person-badge" style="padding: 10px;"></i>
-                            Staff Management
-                        </a>
-                    </li>
-
                     <li class="nav-item">
-                        <a href="books.php" class="nav-link text-white">
+                        <a href="../bookRegistration/bookInventory.php" class="nav-link text-white">
                             <i class="bi bi-book" style="padding: 10px;"></i>
                             Book Inventory
                         </a>
                     </li>
 
-                    <li>
-                        <a href="bookCategory.php" class="nav-link text-white">
+                    <li class="nav-item">
+                        <a href="../bookCategory/bookCategory.php" class="nav-link text-white">
                             <i class="bi bi-grid" style="padding: 10px;"></i>
                             Categories
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="members.php" class="nav-link text-white">
+                        <a href="../memberReg/memberReg.php" class="nav-link text-white">
                             <i class="bi bi-people" style="padding: 10px;"></i>
                             Member Registry
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="borrow.php" class="nav-link text-white">
+                        <a href="../borrowingOps/borrowingBook.php" class="nav-link text-white">
                             <i class="bi bi-arrow-left-right" style="padding: 10px;"></i>
                             Borrowing Ops
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="fineManage.php" class="nav-link active">
+                        <a href="fineManage.php" class= "nav-link active">
                             <i class="bi bi-cash-stack" style="padding: 10px;"></i>
                             Fines Management
                         </a>
@@ -230,27 +224,32 @@ $fine_result = $conn->query("
 
             <!-- TOP NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
-
-                <form class="d-flex mx-auto" method="GET" action="">
+                <form class="d-flex mx-auto">
                     <input class="form-control me-3"
                         type="search"
-                        name="search"
                         placeholder="Search"
                         style="width: 300px;">
-
-                    <button type="submit" class="btn btn-secondary">
+                    <button type="button" class="btn btn-secondary">
                         Search
                     </button>
                 </form>
 
-                <div class="container-fluid justify-content-end d-flex">
-                    <i class="bi bi-person-circle text-white fs-3" style="padding-right: 10px;"></i>
-                    <a class="navbar-brand" href="#">
-                        User
+                <div class="dropdown">
+                    <a class="btn btn-outline-light dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown">
+                        <?php echo $_SESSION['username']; ?>
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item text-danger" href="../logout.php">
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
 
                 </div>
-
             </nav>
 
             <!-- PAGE CONTENT -->

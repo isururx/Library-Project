@@ -101,39 +101,32 @@ $result = $conn->query("SELECT * FROM bookcategory");
 
             <!-- TOP NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
-
                 <form class="d-flex mx-auto">
                     <input class="form-control me-3"
                         type="search"
                         placeholder="Search"
                         style="width: 300px;">
-
                     <button type="button" class="btn btn-secondary">
                         Search
                     </button>
                 </form>
 
                 <div class="dropdown">
-
                     <a class="btn btn-outline-light dropdown-toggle"
                     href="#"
                     role="button"
                     data-bs-toggle="dropdown">
-
                         <?php echo $_SESSION['username']; ?>
-
                     </a>
-
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item text-danger" href="../login/logout.php">
+                            <a class="dropdown-item text-danger" href="../logout.php">
                                 Logout
                             </a>
                         </li>
                     </ul>
 
                 </div>
-
             </nav>
 
             <!-- PAGE CONTENT -->
