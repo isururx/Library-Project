@@ -121,7 +121,7 @@ $result = $conn->query("SELECT * FROM bookcategory");
                     <ul class="dropdown-menu dropdown-menu-end">
 
                         <li>
-                            <a class="dropdown-item text-danger" href="logout.php">
+                            <a class="dropdown-item text-danger" href="../login/logout.php">
                                 Logout
                             </a>
                         </li>
