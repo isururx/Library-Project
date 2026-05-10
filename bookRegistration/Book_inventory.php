@@ -59,13 +59,6 @@ $totalBooks = $row['total'];
 
                 <ul class="nav nav-pills flex-column mb-auto">
 
-                     <li class="nav-item">
-                        <a href="staff.php" class="nav-link text-white">
-                            <i class="bi bi-person-badge" style="padding: 10px;"></i>
-                            Staff Management
-                        </a>
-                    </li>
-
                     <li class="nav-item">
                         <a href="Book_inventory.php"  class="nav-link active">
                             <i class="bi bi-book" style="padding: 10px;"></i>

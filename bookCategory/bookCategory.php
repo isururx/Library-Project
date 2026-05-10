@@ -43,20 +43,11 @@ $result = $conn->query("SELECT * FROM bookcategory");
                     <i class="bi bi-building-fill text-primary fs-3"></i>
 
                     <div>
-                        <div class="fw-bold fs-4">Lexicon Admin</div>
+                        <div class="fw-bold fs-4">LibraCore</div>
                         <small class="text-secondary">Institutional Portal</small>
                     </div>
 
                 </a>
-
-                <ul class="nav nav-pills flex-column mb-auto">
-
-                     <li class="nav-item">
-                        <a href="staff.php" class="nav-link text-white">
-                            <i class="bi bi-person-badge" style="padding: 10px;"></i>
-                            Staff Management
-                        </a>
-                    </li>
 
                     <li class="nav-item">
                         <a href="books.php" class="nav-link text-white">

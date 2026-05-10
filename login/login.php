@@ -22,7 +22,7 @@ if(isset($_POST['login'])){
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['username'] = $user['username'];
 
-        header("Location: dashboard.php");
+        header("Location: ..\bookRegistration\Book_inventory.php");
         exit();
 
     } else {
@@ -185,35 +185,24 @@ if(isset($_POST['login'])){
 <body>
 
 <div class="container h-100 d-flex justify-content-center align-items-center">
-
     <div class="card shadow-lg login-card p-4" style="width: 420px;">
-
         <div class="text-center mb-4">
-
             <i class="bi bi-book-half text-primary" style="font-size: 60px;"></i>
-
             <h2 class="fw-bold mt-2">LibraCore</h2>
-
             <p class="text-muted">
                 Library Management System
             </p>
-
         </div>
 
         <?php if($message != ""){ ?>
-
             <div class="alert alert-danger">
                 <?php echo $message; ?>
             </div>
-
         <?php } ?>
 
         <form method="POST">
-
             <!-- USERNAME -->
-
             <div class="mb-3">
-
                 <label class="form-label">
                     Username
                 </label>
@@ -227,25 +216,20 @@ if(isset($_POST['login'])){
             </div>
 
             <!-- PASSWORD -->
-
             <div class="mb-4">
-
                 <label class="form-label">
                     Password
                 </label>
 
                 <div class="password-wrapper">
-
                     <input type="password"
                            name="password"
                            id="password"
                            class="form-control"
                            placeholder="Enter password"
                            required>
-
                     <i class="bi bi-eye-slash toggle-password"
                        id="togglePassword"></i>
-
                 </div>
 
             </div>
@@ -255,10 +239,8 @@ if(isset($_POST['login'])){
             <button type="submit"
                     name="login"
                     class="btn btn-primary w-100 btn-login">
-
                 <i class="bi bi-box-arrow-in-right"></i>
                 Login
-
             </button>
 
         </form>
@@ -268,56 +250,39 @@ if(isset($_POST['login'])){
 </div>
 
 <!-- BOOK LOADER -->
-
 <div id="loader-wrapper">
-
     <div class="book">
-
         <div class="book-page page-left"></div>
-
         <div class="book-page page-middle"></div>
-
         <div class="book-page page-right"></div>
-
     </div>
-
     <div class="loading-text">
         Opening Library...
     </div>
-
 </div>
 
 <!-- SCRIPTS -->
 
 <script>
-
     // LOGIN LOADER
-
     const loginForm = document.querySelector("form");
     const loader = document.getElementById("loader-wrapper");
 
     loginForm.addEventListener("submit", function(){
-
         loader.classList.add("active");
-
     });
 
     // SHOW / HIDE PASSWORD
-
     const togglePassword = document.getElementById("togglePassword");
     const password = document.getElementById("password");
 
     togglePassword.addEventListener("click", function(){
-
         const type = password.getAttribute("type") === "password"
             ? "text"
             : "password";
-
         password.setAttribute("type", type);
-
         this.classList.toggle("bi-eye");
         this.classList.toggle("bi-eye-slash");
-
     });
 
 </script>
