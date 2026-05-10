@@ -1,6 +1,7 @@
 <?php
 include '../db/db.php';
 include '../authCheck.php';
+include 'searchMemberModal.php';
 
 $result = $conn->query("SELECT * FROM member");
 ?>
@@ -183,12 +184,15 @@ $result = $conn->query("SELECT * FROM member");
 
             <!-- TOP NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
-                <form class="d-flex mx-auto">
+                <form method="GET" class="d-flex mx-auto">
                     <input class="form-control me-3"
                         type="search"
-                        placeholder="Search"
-                        style="width: 300px;">
-                    <button type="button" class="btn btn-secondary">
+                        name="search"
+                        placeholder="Search Member"
+                        style="width: 300px;"
+                        required>
+                    <button type="submit"
+                            class="btn btn-secondary">
                         Search
                     </button>
                 </form>

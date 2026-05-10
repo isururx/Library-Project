@@ -11,12 +11,21 @@ if(isset($_POST['login'])){
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
+    /* ADMIN LOGIN */
+
+    if($username === "admin" && $password === "admin"){
+
+        $_SESSION['role'] = "admin";
+        $_SESSION['username'] = "Administrator";
+
+        header("Location: admin/userManagement.php");
+        exit();
+
+    }
+
     $stmt = $conn->prepare("SELECT * FROM user WHERE username=? AND password=?");
-
     $stmt->bind_param("ss", $username, $password);
-
     $stmt->execute();
-
     $result = $stmt->get_result();
 
     if($result->num_rows > 0){
