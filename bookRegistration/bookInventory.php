@@ -35,6 +35,16 @@ $totalBooks = $row['total'];
         .nav-link:hover i{
             color: white;
         }
+
+        html, body{
+            height: 100%;
+            margin: 0;
+        }
+
+        .sidebar{
+            min-height: 100vh;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -45,7 +55,7 @@ $totalBooks = $row['total'];
 
         <!-- SIDEBAR -->
         <div class="col-md-2 p-0">
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100">
+            <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-dark text-white">
 
                 <a class="navbar-brand mb-4 d-flex align-items-center text-white px-2 py-3" href="#">
                     <i class="bi bi-book-half text-primary me-3" style="font-size: 40px;"></i>

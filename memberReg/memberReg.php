@@ -102,6 +102,16 @@ $result = $conn->query("SELECT * FROM member");
             display: none;
             margin-top: 3px;
         }
+
+        html, body{
+            height: 100%;
+            margin: 0;
+        }
+
+        .sidebar{
+            min-height: 100vh;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -111,7 +121,7 @@ $result = $conn->query("SELECT * FROM member");
 
         <!-- SIDEBAR -->
         <div class="col-md-2 p-0">
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100">
+            <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-dark text-white">
 
                 <a class="navbar-brand mb-4 d-flex align-items-center text-white px-2 py-3" href="#">
                     <i class="bi bi-book-half text-primary me-3" style="font-size: 40px;"></i>
@@ -305,23 +315,7 @@ $result = $conn->query("SELECT * FROM member");
                             </div>
                         </div>
                     </div>
-
                 </div>
-
-                <!-- SUCCESS / ERROR ALERTS -->
-                <?php if (isset($_GET['success'])): ?>
-                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                        <i class="bi bi-check-circle-fill me-2"></i>
-                        Member <?php echo htmlspecialchars($_GET['success']); ?> successfully.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php elseif (isset($_GET['error'])): ?>
-                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <?php echo htmlspecialchars($_GET['error']); ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
 
                 <!-- MEMBER TABLE -->
                 <div class="card shadow-sm border-0 mt-4">
@@ -329,7 +323,6 @@ $result = $conn->query("SELECT * FROM member");
 
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h4 class="mb-0">
-                                <i class="bi bi-table me-2 text-primary"></i>
                                 Registered Members
                             </h4>
                             <span class="badge bg-primary rounded-pill px-3 py-2">
@@ -361,24 +354,21 @@ $result = $conn->query("SELECT * FROM member");
                                     ?>
                                         <tr>
                                             <td>
-                                                <span class="badge bg-secondary rounded-pill">
+                                                <div class="member-name-cell">
                                                     <?php echo htmlspecialchars($row['member_id']); ?>
                                                 </span>
                                             </td>
                                             <td>
                                                 <div class="member-name-cell">
-                                                    <span class="avatar-circle"><?php echo $initials; ?></span>
                                                     <?php echo htmlspecialchars($row['first_name']); ?>
                                                 </div>
                                             </td>
                                             <td><?php echo htmlspecialchars($row['last_name']); ?></td>
                                             <td>
-                                                <i class="bi bi-calendar3 me-1 text-muted"></i>
                                                 <?php echo htmlspecialchars($row['birthday']); ?>
                                             </td>
                                             <td>
                                                 <a href="mailto:<?php echo htmlspecialchars($row['email']); ?>" class="text-decoration-none">
-                                                    <i class="bi bi-envelope me-1 text-muted"></i>
                                                     <?php echo htmlspecialchars($row['email']); ?>
                                                 </a>
                                             </td>

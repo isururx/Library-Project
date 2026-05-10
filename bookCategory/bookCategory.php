@@ -3,6 +3,31 @@ include '../db/db.php';
 include '../authCheck.php';
 
 $result = $conn->query("SELECT * FROM bookcategory");
+
+/* GET NEXT CATEGORY ID */
+
+$nextCategoryID = "C001";
+
+$resultID = $conn->query("
+    SELECT category_id
+    FROM bookcategory
+    ORDER BY CAST(SUBSTRING(category_id, 2) AS UNSIGNED) DESC
+    LIMIT 1
+");
+
+if($resultID->num_rows > 0){
+
+    $rowID = $resultID->fetch_assoc();
+
+    $lastID = $rowID['category_id'];
+
+    $number = (int) substr($lastID, 1);
+
+    $number++;
+
+    $nextCategoryID = "C" . str_pad($number, 3, "0", STR_PAD_LEFT);
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +53,16 @@ $result = $conn->query("SELECT * FROM bookcategory");
         .nav-link:hover i{
             color: white;
         }
+
+        html, body{
+            height: 100%;
+            margin: 0;
+        }
+
+        .sidebar{
+            min-height: 100vh;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -38,7 +73,7 @@ $result = $conn->query("SELECT * FROM bookcategory");
 
         <!-- SIDEBAR -->
         <div class="col-md-2 p-0">
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100">
+            <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-dark text-white">
 
                 <a class="navbar-brand mb-4 d-flex align-items-center text-white px-2 py-3" href="#">
                     <i class="bi bi-book-half text-primary me-3" style="font-size: 40px;"></i>
@@ -160,14 +195,32 @@ $result = $conn->query("SELECT * FROM bookcategory");
                                         Add New Category
                                     </h6>
 
-                                    <form class="d-flex gap-2">
+                                    <form action="addCategory.php" method="POST" class="d-flex gap-2">
+
+                                        <!-- CATEGORY ID -->
+
                                         <input type="text"
+                                            name="category_id"
                                             class="form-control"
-                                            placeholder="Category name">
+                                            value="<?php echo $nextCategoryID; ?>"
+                                            readonly>
+
+                                        <!-- CATEGORY NAME -->
+
+                                        <input type="text"
+                                            name="category_name"
+                                            class="form-control"
+                                            placeholder="Category name"
+                                            required>
+
                                         <button type="submit"
+                                                name="submit"
                                                 class="btn btn-primary">
+
                                             <i class="bi bi-plus-lg"></i>
+
                                         </button>
+
                                     </form>
 
                                 </div>
