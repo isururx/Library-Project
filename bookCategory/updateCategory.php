@@ -1,19 +1,31 @@
 <?php
+
 include '../db/db.php';
-$id = $_GET['id'];
 
-$res = $conn->query("SELECT * FROM bookcategory WHERE category_id = $id");
-$row = $res->fetch_assoc();
+if(isset($_POST['update'])){
 
-if (isset($_POST['update'])) {
-    $newName = $_POST['category_name'];
-    $date = date("Y-m-d H:i:s");
+    $categoryID = $_POST['category_id'];
 
-    $sql = "UPDATE bookcategory SET category_Name='$newName', date_modified='$date' WHERE category_id=$id";
-    
-    if ($conn->query($sql) === TRUE) {
-        header("Location: bookCategory.php?msg=updated");
+    $categoryName = $_POST['category_name'];
+
+    $sql = "
+        UPDATE bookcategory
+        SET category_Name = '$categoryName',
+            date_modified = CURDATE()
+        WHERE category_id = '$categoryID'
+    ";
+
+    if($conn->query($sql) === TRUE){
+
+        header("Location: bookCategory.php");
+        exit();
+
+    }else{
+
+        echo "Error: " . $conn->error;
+
     }
-}
-?>
 
+}
+
+?>

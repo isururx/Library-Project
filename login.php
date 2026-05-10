@@ -304,6 +304,21 @@ if(isset($_POST['login'])){
                 Secure Staff Access Portal
             </div>
 
+            <div class="text-center mt-2">
+
+                <span class="text-muted">
+                    Don't have an account?
+                </span>
+
+                <a href="createAccount.php"
+                class="text-decoration-none fw-semibold">
+
+                    Create Account
+
+                </a>
+
+            </div>
+
         </form>
 
     </div>

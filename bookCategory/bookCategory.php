@@ -1,13 +1,13 @@
 <?php
 include '../db/db.php';
 include '../authCheck.php';
+include 'editCategoryModal.php';
+include 'searchCategoryModal.php';
 
 $result = $conn->query("SELECT * FROM bookcategory");
 
 /* GET NEXT CATEGORY ID */
-
 $nextCategoryID = "C001";
-
 $resultID = $conn->query("
     SELECT category_id
     FROM bookcategory
@@ -16,18 +16,13 @@ $resultID = $conn->query("
 ");
 
 if($resultID->num_rows > 0){
-
     $rowID = $resultID->fetch_assoc();
-
     $lastID = $rowID['category_id'];
-
     $number = (int) substr($lastID, 1);
-
     $number++;
-
     $nextCategoryID = "C" . str_pad($number, 3, "0", STR_PAD_LEFT);
-
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -136,12 +131,15 @@ if($resultID->num_rows > 0){
 
             <!-- TOP NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
-                <form class="d-flex mx-auto">
+                <form method="GET" class="d-flex mx-auto">
                     <input class="form-control me-3"
                         type="search"
-                        placeholder="Search"
-                        style="width: 300px;">
-                    <button type="button" class="btn btn-secondary">
+                        name="search"
+                        placeholder="Search By Category Name"
+                        style="width: 300px;"
+                        required>
+                    <button type="submit"
+                            class="btn btn-secondary">
                         Search
                     </button>
                 </form>
@@ -255,14 +253,21 @@ if($resultID->num_rows > 0){
                                         <td><?php echo $row['category_Name']; ?></td>
                                         <td><?php echo $row['date_modified']; ?></td>
                                         <td>
-                                            <a href="updateCategory.php?id=<?php echo $row['category_id']; ?>"
-                                            class="btn btn-warning btn-sm">
-                                            <i class="bi bi-pencil-square"></i>
-                                            </a>
+                                            <button
+                                                class="btn btn-warning btn-sm editBtn"
+                                                data-id="<?php echo $row['category_id']; ?>"
+                                                data-name="<?php echo $row['category_Name']; ?>"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editCategoryModal">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            
                                             <a href="deleteCategory.php?id=<?php echo $row['category_id']; ?>"
-                                            class="btn btn-danger btn-sm">
-                                            <i class="bi bi-trash"></i>
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to delete this category?');">
+                                                <i class="bi bi-trash"></i>
                                             </a>
+
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -276,6 +281,19 @@ if($resultID->num_rows > 0){
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const editButtons = document.querySelectorAll(".editBtn");
+    editButtons.forEach(button => {
+        button.addEventListener("click", function(){
+            document.getElementById("editCategoryID").value =
+                this.dataset.id;
+            document.getElementById("editCategoryName").value =
+                this.dataset.name;
+        });
+    });
+
+</script>
 
 </body>
 
