@@ -1,5 +1,6 @@
 <?php
 include '../db/db.php';
+include '../authCheck.php';
 $result = $conn->query("SELECT * FROM member");
 ?>
 

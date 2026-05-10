@@ -177,7 +177,7 @@ $totalBooks = $row['total'];
                 <!-- Inventory TABLE -->
                 <div class="card shadow-sm border-0 mt-5">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3" href="..\memberReg\memberReg.php">
                             <h4 class="mb-0">Book Inventory</h4>
                         </div>
 
