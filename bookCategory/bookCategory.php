@@ -1,5 +1,6 @@
 <?php
 include '../db/db.php';
+include '../login/authCheck.php';
 $result = $conn->query("SELECT * FROM bookcategory");
 ?>
 
@@ -115,11 +116,26 @@ $result = $conn->query("SELECT * FROM bookcategory");
                     </button>
                 </form>
 
-                <div class="container-fluid justify-content-end d-flex">
-                    <i class="bi bi-person-circle text-white fs-3" style="padding-right: 10px;"></i>
-                    <a class="navbar-brand" href="#">
-                        User
+                <div class="dropdown">
+
+                    <a class="btn btn-outline-light dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown">
+
+                        <?php echo $_SESSION['username']; ?>
+
                     </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+                            <a class="dropdown-item text-danger" href="logout.php">
+                                Logout
+                            </a>
+                        </li>
+
+                    </ul>
 
                 </div>
 
