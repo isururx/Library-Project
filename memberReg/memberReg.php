@@ -304,7 +304,7 @@ $result = $conn->query("SELECT * FROM member");
 
                                         <!-- Submit -->
                                         <div class="col-md-1">
-                                            <button type="submit" class="btn btn-primary btn-sm w-100">
+                                            <button type="submit" name="submit" class="btn btn-primary btn-sm w-100">
                                                 <i class="bi bi-plus-lg"></i>
                                             </button>
                                         </div>
@@ -325,9 +325,6 @@ $result = $conn->query("SELECT * FROM member");
                             <h4 class="mb-0">
                                 Registered Members
                             </h4>
-                            <span class="badge bg-primary rounded-pill px-3 py-2">
-                                <?php echo $countRow['total']; ?> Members
-                            </span>
                         </div>
 
                         <div class="table-responsive">
@@ -374,14 +371,12 @@ $result = $conn->query("SELECT * FROM member");
                                             </td>
                                             <td class="text-center">
                                                 <a href="updateMember.php?id=<?php echo $row['member_id']; ?>"
-                                                    class="btn btn-warning btn-sm me-1"
-                                                    title="Edit Member">
+                                                    class="btn btn-warning btn-sm me-1">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
                                                 <a href="deleteMember.php?id=<?php echo $row['member_id']; ?>"
-                                                    class="btn btn-danger btn-sm"
-                                                    title="Delete Member"
-                                                    onclick="return confirm('Delete member <?php echo htmlspecialchars($row['member_id']); ?>? This cannot be undone.');">
+                                                class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Delete member <?php echo $row['member_id']; ?>? This cannot be undone.');">
                                                     <i class="bi bi-trash"></i>
                                                 </a>
                                             </td>
