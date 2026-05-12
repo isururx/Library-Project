@@ -1,5 +1,6 @@
 <?php
 include '../db/db.php';
+include '../authCheck.php';
 
 $message = "";
 
@@ -22,6 +23,24 @@ if(isset($_POST['registerBook'])){
 }
 
 $categoryResult = $conn->query("SELECT * FROM bookcategory");
+
+/* GET NEXT CATEGORY ID */
+$nextCategoryID = "B001";
+$resultID = $conn->query("
+    SELECT book_id
+    FROM book
+    ORDER BY CAST(SUBSTRING(book_id, 2) AS UNSIGNED) DESC
+    LIMIT 1
+");
+
+if($resultID->num_rows > 0){
+    $rowID = $resultID->fetch_assoc();
+    $lastID = $rowID['book_id'];
+    $number = (int) substr($lastID, 1);
+    $number++;
+    $nextbookID = "B" . str_pad($number, 3, "0", STR_PAD_LEFT);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +48,7 @@ $categoryResult = $conn->query("SELECT * FROM bookcategory");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Registration - Lexicon Admin</title>
+    <title>Book Registration</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -78,59 +97,53 @@ $categoryResult = $conn->query("SELECT * FROM bookcategory");
 
         <!-- SIDEBAR -->
         <div class="col-md-2 p-0">
+            <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-dark text-white">
 
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white vh-100">
-
-                <a class="navbar-brand mb-4 d-flex align-items-center gap-2 text-white" href="#">
-
-                    <i class="bi bi-building-fill text-primary fs-3"></i>
-
+                <a class="navbar-brand mb-4 d-flex align-items-center text-white px-2 py-3" href="#">
+                    <i class="bi bi-book-half text-primary me-3" style="font-size: 40px;"></i>
                     <div>
-                        <div class="fw-bold fs-4">Lexicon Admin</div>
-                        <small class="text-secondary">Institutional Portal</small>
+                        <h2 class="fw-bold mb-0" style="font-size: 30px;">
+                            LibraCore
+                        </h2>
+                        <small class="text-secondary">
+                            Library Portal
+                        </small>
                     </div>
-
                 </a>
 
                 <ul class="nav nav-pills flex-column mb-auto">
 
                     <li class="nav-item">
-                        <a href="staff.php" class="nav-link text-white">
-                            <i class="bi bi-person-badge" style="padding: 10px;"></i>
-                            Staff Management
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="Book_inventory.php" class="nav-link active">
+                        <a href="bookInventory.php"  class="nav-link active">
                             <i class="bi bi-book" style="padding: 10px;"></i>
                             Book Inventory
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="bookCategory.php" class="nav-link text-white">
+                        <a href="../bookCategory/bookCategory.php"
+                        class="nav-link text-white">
                             <i class="bi bi-grid" style="padding: 10px;"></i>
                             Categories
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="members.php" class="nav-link text-white">
+                        <a href="../memberReg/memberReg.php" class="nav-link text-white">
                             <i class="bi bi-people" style="padding: 10px;"></i>
                             Member Registry
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="borrow.php" class="nav-link text-white">
+                        <a href="../borrowingOps/borrowingBook.php" class="nav-link text-white">
                             <i class="bi bi-arrow-left-right" style="padding: 10px;"></i>
                             Borrowing Ops
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="fines.php" class="nav-link text-white">
+                        <a href="../fineManage/fineManage.php" class="nav-link text-white">
                             <i class="bi bi-cash-stack" style="padding: 10px;"></i>
                             Fines Management
                         </a>
@@ -147,25 +160,24 @@ $categoryResult = $conn->query("SELECT * FROM bookcategory");
 
             <!-- TOP NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
-
-                <form class="d-flex mx-auto">
-                    <input class="form-control me-3"
-                        type="search"
-                        placeholder="Search"
-                        style="width: 300px;">
-
-                    <button type="button" class="btn btn-secondary">
-                        Search
-                    </button>
-                </form>
-
-                <div class="container-fluid justify-content-end d-flex">
-                    <i class="bi bi-person-circle text-white fs-3" style="padding-right: 10px;"></i>
-                    <a class="navbar-brand" href="#">
-                        User
-                    </a>
+                <div>
                 </div>
+                <div class="dropdown">
+                    <a class="btn btn-outline-light dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown">
+                        <?php echo $_SESSION['username']; ?>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item text-danger" href="../logout.php">
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
 
+                </div>
             </nav>
 
             <!-- PAGE CONTENT -->
@@ -177,7 +189,7 @@ $categoryResult = $conn->query("SELECT * FROM bookcategory");
                         <p class="text-muted mb-0">Register new books into the library inventory</p>
                     </div>
 
-                    <a href="Book_inventory.php" class="btn btn-outline-primary">
+                    <a href="bookinventory.php" class="btn btn-outline-primary">
                         <i class="bi bi-arrow-left"></i>
                         Back to Inventory
                     </a>
@@ -211,8 +223,10 @@ $categoryResult = $conn->query("SELECT * FROM bookcategory");
                                     <input type="text"
                                            name="ID"
                                            class="form-control"
-                                           placeholder="Enter Book ID number"
-                                           required>
+                                           value="<?php echo $nextbookID;
+                                           ?>"
+                                           readonly
+                                           >
                                 </div>
 
                                 <div class="col-md-6 mb-3">

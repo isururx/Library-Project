@@ -10,6 +10,7 @@ $count = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($count);
 
 $totalBooks = $row['total'];
+
 ?>
 
 <!DOCTYPE html>
@@ -118,12 +119,15 @@ $totalBooks = $row['total'];
 
             <!-- TOP NAVBAR -->
             <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
-                <form class="d-flex mx-auto">
+                
+                <form action="Inven_search.php" class="d-flex mx-auto" method="POST">
                     <input class="form-control me-3"
                         type="search"
+                        name="search_1"
                         placeholder="Search"
                         style="width: 300px;">
-                    <button type="button" class="btn btn-secondary">
+
+                    <button type="submit" name="search" class="btn btn-secondary">
                         Search
                     </button>
                 </form>
@@ -173,11 +177,11 @@ $totalBooks = $row['total'];
                                 <div class="w-100">
 
                                     <h6 class="text-muted mb-3">
-                                        Add New Book
+                                        Have new arrivals ?
                                     </h6>
 
-                                    <a href="Book_reg.php" class="btn btn-outline-primary">
-                                        New Book
+                                    <a href="bookreg.php" class="btn btn-outline-primary">
+                                        Add to inventory
                                     <i class="bi bi-arrow-right"></i> 
                                     </a>
 

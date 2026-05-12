@@ -9,7 +9,7 @@ if (isset($_GET['book_id']) && isset($_GET['new_name'])) {
 
     if($conn->query($sql)){
         $message = "Book updated successfully!";
-        header("Location: Book_inventory.php");
+        header("Location: bookinventory.php");
     }else{
         $message = "Failed to update book.";
     }
