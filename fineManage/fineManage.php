@@ -151,6 +151,14 @@ $fine_result = $conn->query("
             min-height: 100vh;
         }
 
+        .search-highlight {
+            background-color: #ffc107;
+            color: #000;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+
     </style>
 </head>
 
@@ -227,9 +235,11 @@ $fine_result = $conn->query("
                 <form class="d-flex mx-auto">
                     <input class="form-control me-3"
                         type="search"
-                        placeholder="Search"
+                        id="pageSearchInput"
+                        placeholder="Search page"
                         style="width: 300px;">
-                    <button type="button" class="btn btn-secondary">
+
+                    <button type="button" class="btn btn-secondary" id="pageSearchButton">
                         Search
                     </button>
                 </form>
@@ -415,7 +425,10 @@ $fine_result = $conn->query("
 
                             <h4 class="mb-0">Assigned Fines</h4>
 
-                            <input type="text" name="fine_search" class="form-control w-25" placeholder="Search fines">
+                            <input type="text" 
+                                    id="fineTableSearchInput" 
+                                    class="form-control w-25" 
+                                    placeholder="Search fines">
 
                         </div>
 
@@ -500,7 +513,131 @@ $fine_result = $conn->query("
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const pageSearchInput = document.getElementById("pageSearchInput");
+    const pageSearchButton = document.getElementById("pageSearchButton");
+    const fineTableSearchInput = document.getElementById("fineTableSearchInput");
+
+    const fineRows = document.querySelectorAll("table tbody tr");
+    const pageContent = document.querySelector(".p-4");
+
+    function resetHighlights() {
+        document.querySelectorAll(".search-highlight").forEach(function (highlight) {
+            highlight.replaceWith(document.createTextNode(highlight.textContent));
+        });
+
+        pageContent.normalize();
+    }
+
+    function highlightKeyword(keyword) {
+        const walker = document.createTreeWalker(
+            pageContent,
+            NodeFilter.SHOW_TEXT,
+            {
+                acceptNode: function (node) {
+                    const parentTag = node.parentNode.tagName;
+
+                    if (
+                        ["SCRIPT", "STYLE", "INPUT", "SELECT", "BUTTON", "OPTION", "TEXTAREA"].includes(parentTag)
+                    ) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+
+                    if (node.nodeValue.toLowerCase().includes(keyword.toLowerCase())) {
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+
+                    return NodeFilter.FILTER_REJECT;
+                }
+            }
+        );
+
+        const matchingNodes = [];
+
+        while (walker.nextNode()) {
+            matchingNodes.push(walker.currentNode);
+        }
+
+        matchingNodes.forEach(function (node) {
+            const text = node.nodeValue;
+            const regex = new RegExp("(" + escapeRegExp(keyword) + ")", "gi");
+
+            const wrapper = document.createElement("span");
+            wrapper.innerHTML = text.replace(regex, '<span class="search-highlight">$1</span>');
+
+            node.parentNode.replaceChild(wrapper, node);
+        });
+    }
+
+    function escapeRegExp(text) {
+        return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function searchWholePage() {
+        const keyword = pageSearchInput.value.trim();
+
+        resetHighlights();
+
+        if (keyword === "") {
+            return;
+        }
+
+        const pageText = pageContent.textContent.toLowerCase();
+
+        if (!pageText.includes(keyword.toLowerCase())) {
+            alert("No matching keyword found on this page.");
+            return;
+        }
+
+        highlightKeyword(keyword);
+
+        setTimeout(function () {
+            const firstMatch = document.querySelector(".search-highlight");
+
+            if (firstMatch) {
+                firstMatch.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+        }, 50);
+    }
+
+    function searchFineTable() {
+        const keyword = fineTableSearchInput.value.trim().toLowerCase();
+
+        fineRows.forEach(function (row) {
+            const rowText = row.textContent.toLowerCase();
+
+            if (rowText.includes(keyword)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    pageSearchButton.addEventListener("click", searchWholePage);
+
+    pageSearchInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            searchWholePage();
+        }
+    });
+
+    pageSearchInput.addEventListener("input", function () {
+        if (pageSearchInput.value.trim() === "") {
+            resetHighlights();
+        }
+    });
+
+    fineTableSearchInput.addEventListener("keyup", searchFineTable);
+
+});
+</script>
 
 
 </body>
