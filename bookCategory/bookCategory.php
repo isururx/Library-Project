@@ -176,7 +176,16 @@ if($resultID->num_rows > 0){
                             <div class="card-body d-flex align-items-center justify-content-between">
                                 <div>
                                     <h6 class="text-muted">Total Categories</h6>
-                                    <h2 class="fw-bold">12</h2>
+                                    <h2 class="fw-bold">
+                                        <?php
+
+                                            $queryCount = "SELECT COUNT(*) AS total FROM bookcategory";
+                                            $resultCount = mysqli_query($conn, $queryCount);
+                                            $row = mysqli_fetch_assoc($resultCount);
+
+                                            echo $row['total'];
+                                        ?>
+                                    </h2>
                                 </div>
                                 <i class="bi bi-grid-fill fs-1 text-primary"></i>
                             </div>

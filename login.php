@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-
 include 'db/db.php';
 
 $message = "";
@@ -12,7 +11,6 @@ if(isset($_POST['login'])){
     $password = trim($_POST['password']);
 
     /* ADMIN LOGIN */
-
     if($username === "admin" && $password === "admin"){
 
         $_SESSION['role'] = "admin";
