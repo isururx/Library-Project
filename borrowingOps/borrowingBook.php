@@ -1,0 +1,329 @@
+<?php
+session_start();
+
+
+include '../db/db.php';
+if (file_exists('../authCheck.php')) {
+    include '../authCheck.php';
+}
+
+
+
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+
+
+$query = "SELECT bb.*, b.book_name FROM bookborrower bb 
+          LEFT JOIN book b ON bb.book_id = b.book_id";
+
+
+if (!empty($search)) {
+    $query .= " WHERE bb.borrow_id LIKE '%$search%' 
+                OR bb.book_id LIKE '%$search%' 
+                OR bb.member_id LIKE '%$search%' 
+                OR b.book_name LIKE '%$search%'";
+}
+
+$result = $conn->query($query);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Borrowing Ops</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .nav-link{
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover{
+            background-color: #052dcc;
+            color: white !important;
+        }
+
+        .nav-link:hover i{
+            color: white;
+        }
+
+        html, body{
+            height: 100%;
+            margin: 0;
+        }
+
+        .sidebar{
+            min-height: 100vh;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- SIDEBAR -->
+        <div class="col-md-2 p-0">
+            <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-dark text-white">
+
+                <a class="navbar-brand mb-4 d-flex align-items-center text-white px-2 py-3" href="#">
+                    <i class="bi bi-book-half text-primary me-3" style="font-size: 40px;"></i>
+                    <div>
+                        <h2 class="fw-bold mb-0" style="font-size: 30px;">
+                            LibraCore
+                        </h2>
+                        <small class="text-secondary">
+                            Library Portal
+                        </small>
+                    </div>
+                </a>
+
+                <ul class="nav nav-pills flex-column mb-auto">
+
+                    <li class="nav-item">
+                        <a href="../bookRegistration/bookInventory.php" class="nav-link text-white">
+                            <i class="bi bi-book" style="padding: 10px;"></i>
+                            Book Inventory
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="bookCategory.php"
+                        class="nav-link text-white">
+                            <i class="bi bi-grid" style="padding: 10px;"></i>
+                            Categories
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="../memberReg/memberReg.php" class="nav-link text-white">
+                            <i class="bi bi-people" style="padding: 10px;"></i>
+                            Member Registry
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="../borrowingOps/borrowing_book.php" class="nav-link active">
+                            <i class="bi bi-arrow-left-right" style="padding: 10px;"></i>
+                            Borrowing Ops
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="../fineManage/fineManage.php" class="nav-link text-white">
+                            <i class="bi bi-cash-stack" style="padding: 10px;"></i>
+                            Fines Management
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="col-md-10 p-0">
+
+            <!-- TOP NAVBAR -->
+            <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #162E93;">
+                  <form class="d-flex mx-auto" action="borrowing_book.php" method="GET">
+                   <input class="form-control me-3"
+                         type="search"
+                          name="search" 
+                          placeholder="Search by ID"
+                          value="<?php echo htmlspecialchars($search); ?>"
+                          style="width: 300px;">
+
+                   <button type="submit" class="btn btn-secondary">
+                      Search
+                 </button>
+    
+                  <?php if(!empty($search)): ?>
+                          <a href="borrowing_book.php" class="btn btn-outline-light ms-2">Clear</a>
+                  <?php endif; ?>
+                </form>
+
+                <div class="dropdown">
+                    <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                   
+                   <?php 
+                     if(isset($_SESSION['username'])) {
+                        echo $_SESSION['username']; 
+                        } else {
+                            echo "Guest"; // without login 
+                        }
+                   ?>
+                   </a>
+
+    
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item text-danger" href="../logout.php">
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+
+              <!-- page content -->
+
+
+            <div class="p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1>Book Borrowing Details</h1>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBorrowModal">
+                        <i class="bi bi-plus-lg me-2"></i> Add Borrow Record
+                    </button>
+                </div>
+
+                <div class="card shadow-sm border-0 mt-4">
+                    <div class="card-body">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Borrow ID</th>
+                                    <th>Book ID</th>
+                                    <th>Member ID</th>
+                                    <th>Book Name</th>
+                                    <th>Status</th>
+                                    <th>Modified Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while($row = $result->fetch_assoc()){ ?>
+                                <tr>
+                                    <td><strong><?php echo $row['borrow_id']; ?></strong></td>
+                                    <td><?php echo $row['book_id']; ?></td>
+                                    <td><?php echo $row['member_id']; ?></td>
+                                    <td><?php echo $row['book_name']; ?></td>
+                                    <td>
+                                        <span class="badge <?php echo ($row['borrow_status'] == 'borrowed') ? 'bg-danger' : 'bg-success'; ?>">
+                                            <?php echo ucfirst($row['borrow_status']); ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo $row['borrower_date_modified']; ?></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm edit-btn" 
+                                            data-id="<?php echo $row['borrow_id']; ?>"
+                                            data-book="<?php echo $row['book_id']; ?>"
+                                            data-member="<?php echo $row['member_id']; ?>"
+                                            data-status="<?php echo $row['borrow_status']; ?>"
+                                            data-bs-toggle="modal" data-bs-target="#editBorrowModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <a href="delete_borrow.php?id=<?php echo $row['borrow_id']; ?>" 
+                                           class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addBorrowModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Borrow Entry</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            
+            <form action="insert_borrow.php" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Borrow ID</label>
+                        <input type="text" name="borrow_id" class="form-control" placeholder="BR001" pattern="BR[0-9]{3}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Book ID</label>
+                        <input type="text" name="book_id" class="form-control" placeholder="B001" pattern="B[0-9]{3}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Member ID</label>
+                        <input type="text" name="member_id" class="form-control" placeholder="M001" pattern="M[0-9]{3}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="borrowed">Borrowed</option>
+                            <option value="available">Available</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100">Add Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editBorrowModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">Edit Borrow Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="update_borrow.php" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="borrow_id" id="edit_id">
+                    <div class="mb-3">
+                        <label class="form-label">Book ID</label>
+                        <input type="text" name="book_id" id="edit_book" class="form-control" pattern="B[0-9]{3}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Member ID</label>
+                        <input type="text" name="member_id" id="edit_member" class="form-control" pattern="M[0-9]{3}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Borrow Status</label>
+                        <select name="status" id="edit_status" class="form-select">
+                            <option value="borrowed">Borrowed</option>
+                            <option value="available">Available</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning w-100">Update Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+
+    // Edit Button logic
+    
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            document.getElementById('edit_id').value = this.dataset.id;
+            document.getElementById('edit_book').value = this.dataset.book;
+            document.getElementById('edit_member').value = this.dataset.member;
+            document.getElementById('edit_status').value = this.dataset.status;
+        });
+    });
+</script>
+
+</body>
+</html>
